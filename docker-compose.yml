@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:8.0.33
+    ports:
+      - "9090:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: qwerty
+      MYSQL_DATABASE: boardDB
+      MYSQL_TCP_PORT: 3306
+    restart: on-failure
+
+  api:
+    build: .
+    ports:
+      - "8080:8080"
+    restart: on-failure
+    depends_on:
+      - db
+
+  ui:
+    image: nginx
+    ports:
+      - "80:80"
+    volumes:
+      -  ./src/main/resources/static:/usr/share/nginx/html
+    restart: on-failure
+    depends_on:
+      - api
