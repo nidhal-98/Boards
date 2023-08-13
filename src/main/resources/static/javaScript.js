@@ -66,6 +66,9 @@ function getCards() {
 
                 let cardDiv = document.createElement("div");
                 cardDiv.className = "card";
+                cardDiv.draggable = true;
+                cardDiv.addEventListener('dragstart', dragStart);
+                cardDiv.addEventListener('dragend', dragEnd);
 
 
                 let idDiv = document.createElement("div");
@@ -90,6 +93,8 @@ function getCards() {
                 goArrow.className = "go-arrow";
                 goArrow.textContent = "➷";
 
+
+
                 goCornner.appendChild(goArrow);
 
                 cardDiv.appendChild(idDiv);
@@ -101,6 +106,105 @@ function getCards() {
             });
         })
         .catch(error => console.log('error', error));
+}
+
+const columns = document.querySelectorAll('.Board');
+columns.forEach(column => {
+    column.addEventListener('dragover', dragOver);
+    column.addEventListener('dragenter', dragEnter);
+    column.addEventListener('dragleave', dragLeave);
+    column.addEventListener('drop', drop);
+});
+
+let draggedCard = null;
+
+function dragStart() {
+    draggedCard = this;
+    setTimeout(() => {
+        this.style.display = 'none';
+    }, 0);
+}
+
+function dragEnd() {
+    draggedCard.style.display = 'block';
+    draggedCard = null;
+}
+
+function dragOver(e) {
+    e.preventDefault();
+}
+
+function dragEnter(e) {
+    e.preventDefault();
+    this.classList.add('over');
+}
+
+function dragLeave() {
+    this.classList.remove('over');
+}
+
+function drop(e) {
+    e.preventDefault();
+    const columnElement = this;
+    const columnId = getColumnId(columnElement);
+
+    const cardIddd = parseInt(draggedCard.querySelector('.card-id').id, 10);
+    // Update Board
+    let cardTitleUpdate;
+    let cardDescriptionUpdate;
+
+    if (document.getElementById("updatedTitle").value === "") {
+        cardTitleUpdate = document.getElementById("cardTitle-" + cardIddd).textContent;
+    }
+    else {
+        cardTitleUpdate = document.getElementById("updatedTitle").value;
+        console.log("2");
+    }
+
+    if (document.getElementById("updatedDescription").value === "") {
+        cardDescriptionUpdate = document.getElementById("cardDescription-" + cardIddd).textContent;
+    }
+    else {
+        cardDescriptionUpdate = document.getElementById("updatedDescription").value;
+    }
+
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+        "title": cardTitleUpdate,
+        "description": cardDescriptionUpdate,
+        "section": columnId
+    });
+
+    var requestOptions = {
+        method: 'PUT',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+    };
+
+    fetch("http://localhost:8080/api/boards/1/cards/" + cardIddd, requestOptions)
+        .then(response => response.text())
+        .then(result => {
+            console.log(result);
+        })
+        .catch(error => console.log('error', error));
+    // End
+
+    this.appendChild(draggedCard);
+    this.classList.remove('over');
+}
+
+function getColumnId(columnElement) {
+    if (columnElement.id === "ToDoBoard1") {
+        return 1;
+    } else if (columnElement.id === "InProgress") {
+        return 2;
+    } else if (columnElement.id === "Done") {
+        return 3;
+    }
+    // Add more conditions if needed for other columns
 }
 
 window.onload = getCards;

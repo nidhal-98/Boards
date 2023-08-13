@@ -193,6 +193,7 @@ button:hover {
     background: linear-gradient(to bottom, #2c688766, #032435d8);
     font-family: Arial, Helvetica, sans-serif;
     border: 1px;
+    cursor: pointer;
 }
 
 .card-id {
