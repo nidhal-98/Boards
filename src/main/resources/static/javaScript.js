@@ -89,24 +89,109 @@ function getCards() {
                 let goCornner = document.createElement("div");
                 goCornner.className = "go-corner";
 
+                let iconButton = document.createElement("i"); // Create a clickable icon (button)
+                iconButton.className = "fa-solid fa-trash-can"; // Add appropriate class
+                iconButton.style = "color: #2c6887d9; font-size: 20px; display: flex; align-items: center; justify-content: center; position: absolute; width: 3em; height: 2em; overflow: hidden; top: 0; right: 0;";
+                iconButton.addEventListener("click", () => {
+                    handleIconClick(element.id); // Pass the card ID to the handler
+                });
+
+                let iconUpdate = document.createElement("i"); // Create a clickable icon (button)
+                iconUpdate.className = "fa-regular fa-pen-to-square"; // Add appropriate class
+                iconUpdate.style = "color: #2c6887d9; font-size: 20px; display: flex; align-items: center; justify-content: center; position: absolute; width: 3em; height: 2em; overflow: hidden; top: 35px; right: 0;";
+                iconUpdate.id = "updateIcon";
+                iconUpdate.addEventListener("click", () => {
+                    handleIconUpdate(element.id); // Pass the card ID to the handler
+                });
+
                 let goArrow = document.createElement("div");
                 goArrow.className = "go-arrow";
                 goArrow.textContent = "➷";
-
-
 
                 goCornner.appendChild(goArrow);
 
                 cardDiv.appendChild(idDiv);
                 cardDiv.appendChild(cardTitleDiv);
                 cardDiv.appendChild(descriptionDiv);
-                cardDiv.appendChild(goCornner);
+                // cardDiv.appendChild(goCornner);
+                cardDiv.appendChild(iconButton);
+                cardDiv.appendChild(iconUpdate);
 
                 boardDiv.appendChild(cardDiv);
             });
         })
         .catch(error => console.log('error', error));
 }
+
+function handleIconClick(cardId) {
+    const shouldDelete = confirm('Are you sure you want to DELETE this card?');
+    if (shouldDelete) {
+
+
+        const url = "http://localhost:8080/api/boards/1/cards/" + cardId;
+
+        const options = {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+
+        fetch(url, options)
+            .then(response => {
+                if (response.ok) {
+                    console.log('Player deleted successfully!');
+                    location.reload();
+                } else {
+                    console.error('Error deleting player:', response.statusText);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+}
+
+
+
+function handleIconUpdate(cardId) {
+    var boardContainer = document.querySelector(".BoardContainerHidden");
+    boardContainer.style.display = "block";
+
+    var updateForm = document.getElementById("updateForm");
+    updateForm.addEventListener("submit", function (event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        let cardTitleUpdateHidden = document.getElementById("updatedTitleHidden").value;
+        let cardDescriptionUpdateHidden = document.getElementById("updatedDescriptionHidden").value;
+
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+            "title": cardTitleUpdateHidden,
+            "description": cardDescriptionUpdateHidden,
+            "section": 1
+        });
+
+        var requestOptions = {
+            method: 'PUT',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+        fetch("http://localhost:8080/api/boards/1/cards/" + cardId, requestOptions)
+            .then(response => response.text())
+            .then(result => {
+                console.log(result);
+                window.location.reload();
+            })
+            .catch(error => console.log('error', error));
+    });
+}
+
+
 
 const columns = document.querySelectorAll('.Board');
 columns.forEach(column => {
@@ -419,3 +504,49 @@ setButton.addEventListener("click", function () {
         mainTitle.textContent = newTitle;
     }
 });
+
+function updateCardHidden() {
+    let cardTitleUpdateHidden;
+    let cardDescriptionUpdateHidden;
+
+    if (document.getElementById("cardTitleUpdateHidden").value === "") {
+        cardTitleUpdateHidden = document.getElementById("cardTitle-" + selectedCard).textContent;
+    }
+    else {
+        cardTitleUpdateHidden = document.getElementById("cardTitleUpdateHidden").value;
+    }
+
+    if (document.getElementById("updatedDescriptionHidden").value === "") {
+        cardDescriptionUpdateHidden = document.getElementById("cardDescription-" + selectedCard).textContent;
+    }
+    else {
+        cardDescriptionUpdateHidden = document.getElementById("updatedDescriptionHidden").value;
+    }
+
+    //sectionHidden = document.getElementById("cardDescription-" + selectedCard).textContent;
+
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+        "title": cardTitleUpdateHidden,
+        "description": cardDescriptionUpdateHidden,
+        "section": 1
+    });
+
+    var requestOptions = {
+        method: 'PUT',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+    };
+
+    fetch("http://localhost:8080/api/boards/1/cards/" + selectedCard, requestOptions)
+        .then(response => response.text())
+        .then(result => {
+            console.log(result);
+            location.reload();
+        })
+        .catch(error => console.log('error', error));
+    location.reload();
+}

@@ -2,6 +2,8 @@
 <html>
 
 <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -126,6 +128,28 @@
             </div>
         </div>
     </div>
+
+
+    <!-- Hidden Form -->
+
+    <div class="BoardContainerHidden">
+        <div class="form-items">
+            <div class="col-md-6">
+                <div id="updateDiv">
+                    <form id="updateForm">
+                        <input class="enterTitleCard" id="updatedTitleHidden" name="title" placeholder="Enter Title"
+                            required>
+                        <input class="enterTitleCard" id="updatedDescriptionHidden" name="description"
+                            placeholder="Enter Description" required>
+                        <div class="form-button mt-3">
+                            <button id="submitUpdateHidden" type="submit" class="btn btn-primary">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
     <script src="./javaScript.js"></script>
