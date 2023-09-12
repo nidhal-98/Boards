@@ -1,3 +1,5 @@
+const localhost = window.location.host;
+
 var myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/json");
 
@@ -10,7 +12,7 @@ var getOptions = {
     redirect: 'follow'
 };
 
-fetch("http://localhost:8080/api/boards?title=" + encodeURIComponent(boardTitle), getOptions)
+fetch(`http://${localhost}/api/boards?title=` + encodeURIComponent(boardTitle), getOptions)
     .then(response => response.json())
     .then(data => {
         // Assuming your API returns an array of boards matching the title
@@ -29,7 +31,7 @@ fetch("http://localhost:8080/api/boards?title=" + encodeURIComponent(boardTitle)
                 redirect: 'follow'
             };
 
-            fetch("http://localhost:8080/api/boards", postOptions)
+            fetch(`http://${localhost}/api/boards`, postOptions)
                 .then(response => response.text())
                 .then(result => console.log(result))
                 .catch(error => console.log('error', error));
@@ -45,7 +47,7 @@ function getCards() {
         redirect: 'follow'
     };
 
-    fetch("http://localhost:8080/api/boards/1/cards", requestOptions)
+    fetch(`http://${localhost}/api/boards/1/cards`, requestOptions)
         .then(response => response.json())
         .then(parsedResponse => {
             parsedResponse.forEach(element => {
@@ -101,7 +103,7 @@ function getCards() {
                 iconUpdate.style = "color: #2c6887d9; font-size: 20px; display: flex; align-items: center; justify-content: center; position: absolute; width: 3em; height: 2em; overflow: hidden; top: 35px; right: 0;";
                 iconUpdate.id = "updateIcon";
                 iconUpdate.addEventListener("click", () => {
-                    handleIconUpdate(element.id); // Pass the card ID to the handler
+                    handleIconUpdate(element.id, element.section); // Pass the card ID to the handler
                 });
 
                 let goArrow = document.createElement("div");
@@ -128,7 +130,7 @@ function handleIconClick(cardId) {
     if (shouldDelete) {
 
 
-        const url = "http://localhost:8080/api/boards/1/cards/" + cardId;
+        const url = `http://${localhost}/api/boards/1/cards/` + cardId;
 
         const options = {
             method: 'DELETE',
@@ -154,14 +156,14 @@ function handleIconClick(cardId) {
 
 
 
-function handleIconUpdate(cardId) {
+function handleIconUpdate(cardId, sectionID) {
     var boardContainer = document.querySelector(".BoardContainerHidden");
     boardContainer.style.display = "block";
 
     var updateForm = document.getElementById("updateForm");
     updateForm.addEventListener("submit", function (event) {
         event.preventDefault(); // Prevent the default form submission
-
+        
         let cardTitleUpdateHidden = document.getElementById("updatedTitleHidden").value;
         let cardDescriptionUpdateHidden = document.getElementById("updatedDescriptionHidden").value;
 
@@ -171,7 +173,7 @@ function handleIconUpdate(cardId) {
         var raw = JSON.stringify({
             "title": cardTitleUpdateHidden,
             "description": cardDescriptionUpdateHidden,
-            "section": 1
+            "section": sectionID
         });
 
         var requestOptions = {
@@ -181,7 +183,7 @@ function handleIconUpdate(cardId) {
             redirect: 'follow'
         };
 
-        fetch("http://localhost:8080/api/boards/1/cards/" + cardId, requestOptions)
+        fetch(`http://${localhost}/api/boards/1/cards/` + cardId, requestOptions)
             .then(response => response.text())
             .then(result => {
                 console.log(result);
@@ -269,7 +271,7 @@ function drop(e) {
         redirect: 'follow'
     };
 
-    fetch("http://localhost:8080/api/boards/1/cards/" + cardIddd, requestOptions)
+    fetch(`http://${localhost}/api/boards/1/cards/` + cardIddd, requestOptions)
         .then(response => response.text())
         .then(result => {
             console.log(result);
@@ -300,7 +302,7 @@ function handledropdownUpdateItemClick(sectionValueUpadte) {
 }
 
 let cardId;
-fetch("http://localhost:8080/api/boards/1/cards")
+fetch(`http://${localhost}/api/boards/1/cards`)
     .then((response) => { return response.json() })
     .then((parsedResponse) => {
         let dropdownMenuDiv = document.getElementById("dropdownMenu2");
@@ -323,7 +325,7 @@ fetch("http://localhost:8080/api/boards/1/cards")
     });
 
 function deleteData() {
-    const url = "http://localhost:8080/api/boards/1/cards/" + cardId;
+    const url = `http://${localhost}/api/boards/1/cards/` + cardId;
 
     const options = {
         method: 'DELETE',
@@ -381,7 +383,7 @@ function updateCard() {
         redirect: 'follow'
     };
 
-    fetch("http://localhost:8080/api/boards/1/cards/" + cardId, requestOptions)
+    fetch(`http://${localhost}/api/boards/1/cards/` + cardId, requestOptions)
         .then(response => response.text())
         .then(result => {
             console.log(result);
@@ -426,7 +428,7 @@ function createCard() {
         redirect: 'follow'
     };
 
-    fetch("http://localhost:8080/api/boards/1/cards", requestOptions)
+    fetch(`http://${localhost}/api/boards/1/cards`, requestOptions)
         .then(response => response.json())
         .then(result => {
             console.log(result);
@@ -449,7 +451,7 @@ function getTitlesFromAPI() {
         redirect: 'follow'
     };
 
-    fetch("http://localhost:8080/api/boards", requestOptions)
+    fetch(`http://${localhost}/api/boards`, requestOptions)
         .then((response) => { return response.json() })
         .then(
             (parsedResponse) => {
@@ -483,7 +485,7 @@ function upadteTitle() {
         body: raw,
     };
 
-    fetch("http://localhost:8080/api/boards/1", requestOptions)
+    fetch(`http://${localhost}/api/boards/1`, requestOptions)
         .then(response => response.json())
         .then(result => console.log(result))
         .catch(error => console.log('error', error));
@@ -541,7 +543,7 @@ function updateCardHidden() {
         redirect: 'follow'
     };
 
-    fetch("http://localhost:8080/api/boards/1/cards/" + selectedCard, requestOptions)
+    fetch(`http://${localhost}/api/boards/1/cards/` + selectedCard, requestOptions)
         .then(response => response.text())
         .then(result => {
             console.log(result);
