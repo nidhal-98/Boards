@@ -12,7 +12,7 @@ var getOptions = {
     redirect: 'follow'
 };
 
-fetch(`http://${localhost}/api/boards?title=` + encodeURIComponent(boardTitle), getOptions)
+fetch(`http://${localhost}:8080/api/boards?title=` + encodeURIComponent(boardTitle), getOptions)
     .then(response => response.json())
     .then(data => {
         // Assuming your API returns an array of boards matching the title
@@ -31,7 +31,7 @@ fetch(`http://${localhost}/api/boards?title=` + encodeURIComponent(boardTitle), 
                 redirect: 'follow'
             };
 
-            fetch(`http://${localhost}/api/boards`, postOptions)
+            fetch(`http://${localhost}:8080/api/boards`, postOptions)
                 .then(response => response.text())
                 .then(result => console.log(result))
                 .catch(error => console.log('error', error));
@@ -47,7 +47,7 @@ function getCards() {
         redirect: 'follow'
     };
 
-    fetch(`http://${localhost}/api/boards/1/cards`, requestOptions)
+    fetch(`http://${localhost}:8080/api/boards/1/cards`, requestOptions)
         .then(response => response.json())
         .then(parsedResponse => {
             parsedResponse.forEach(element => {
@@ -130,7 +130,7 @@ function handleIconClick(cardId) {
     if (shouldDelete) {
 
 
-        const url = `http://${localhost}/api/boards/1/cards/` + cardId;
+        const url = `http://${localhost}:8080/api/boards/1/cards/` + cardId;
 
         const options = {
             method: 'DELETE',
@@ -183,7 +183,7 @@ function handleIconUpdate(cardId, sectionID) {
             redirect: 'follow'
         };
 
-        fetch(`http://${localhost}/api/boards/1/cards/` + cardId, requestOptions)
+        fetch(`http://${localhost}:8080/api/boards/1/cards/` + cardId, requestOptions)
             .then(response => response.text())
             .then(result => {
                 console.log(result);
@@ -271,7 +271,7 @@ function drop(e) {
         redirect: 'follow'
     };
 
-    fetch(`http://${localhost}/api/boards/1/cards/` + cardIddd, requestOptions)
+    fetch(`http://${localhost}:8080/api/boards/1/cards/` + cardIddd, requestOptions)
         .then(response => response.text())
         .then(result => {
             console.log(result);
@@ -302,7 +302,7 @@ function handledropdownUpdateItemClick(sectionValueUpadte) {
 }
 
 let cardId;
-fetch(`http://${localhost}/api/boards/1/cards`)
+fetch(`http://${localhost}:8080/api/boards/1/cards`)
     .then((response) => { return response.json() })
     .then((parsedResponse) => {
         let dropdownMenuDiv = document.getElementById("dropdownMenu2");
@@ -325,7 +325,7 @@ fetch(`http://${localhost}/api/boards/1/cards`)
     });
 
 function deleteData() {
-    const url = `http://${localhost}/api/boards/1/cards/` + cardId;
+    const url = `http://${localhost}:8080/api/boards/1/cards/` + cardId;
 
     const options = {
         method: 'DELETE',
@@ -383,7 +383,7 @@ function updateCard() {
         redirect: 'follow'
     };
 
-    fetch(`http://${localhost}/api/boards/1/cards/` + cardId, requestOptions)
+    fetch(`http://${localhost}:8080/api/boards/1/cards/` + cardId, requestOptions)
         .then(response => response.text())
         .then(result => {
             console.log(result);
@@ -428,7 +428,7 @@ function createCard() {
         redirect: 'follow'
     };
 
-    fetch(`http://${localhost}/api/boards/1/cards`, requestOptions)
+    fetch(`http://${localhost}:8080/api/boards/1/cards`, requestOptions)
         .then(response => response.json())
         .then(result => {
             console.log(result);
@@ -451,7 +451,7 @@ function getTitlesFromAPI() {
         redirect: 'follow'
     };
 
-    fetch(`http://${localhost}/api/boards`, requestOptions)
+    fetch(`http://${localhost}:8080/api/boards`, requestOptions)
         .then((response) => { return response.json() })
         .then(
             (parsedResponse) => {
@@ -485,7 +485,7 @@ function upadteTitle() {
         body: raw,
     };
 
-    fetch(`http://${localhost}/api/boards/1`, requestOptions)
+    fetch(`http://${localhost}:8080/api/boards/1`, requestOptions)
         .then(response => response.json())
         .then(result => console.log(result))
         .catch(error => console.log('error', error));
@@ -543,7 +543,7 @@ function updateCardHidden() {
         redirect: 'follow'
     };
 
-    fetch(`http://${localhost}/api/boards/1/cards/` + selectedCard, requestOptions)
+    fetch(`http://${localhost}:8080/api/boards/1/cards/` + selectedCard, requestOptions)
         .then(response => response.text())
         .then(result => {
             console.log(result);
