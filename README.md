@@ -1,6 +1,5 @@
 <h1 style="font-size: 24px;">Cards as Trello</h1>
 <p>This project offers a collaborative and user-friendly board management system, where you can efficiently organize tasks and information.</p>
-[Usage](www.google.com) for this
 
 <h1 style="font-size: 24px;">Table of Contents</h1>
 <h3 style="font-size: 20px;">Installation</h3>
