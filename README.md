@@ -6,8 +6,6 @@
 <h3 style="font-size: 20px;">Getting Started</h3>
 <h3 style="font-size: 20px;">Usage</h3>
 <h3 style="font-size: 20px;">Features</h3>
-<h3 style="font-size: 20px;">Contributing</h3>
-<h3 style="font-size: 20px;">License</h3>
 
 <h1 style="font-size: 24px;">Installation</h1>
 <ol>
